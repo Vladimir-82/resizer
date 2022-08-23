@@ -5,9 +5,12 @@ from django.core.files.base import ContentFile
 from django.shortcuts import render
 from .forms import AddPhoto
 from .models import Photo
-
+from .utils import counter
 
 def resize(request, *args, **kwargs):
+    '''
+    Calculates the image size and creates an object
+    '''
     if request.method == 'POST':
         form = AddPhoto(request.POST, request.FILES)
         if form.is_valid():
@@ -15,12 +18,7 @@ def resize(request, *args, **kwargs):
             data = form.cleaned_data
             image = Image.open(photo)
             width, height = image.size
-            if width > height:
-                new_width = 150
-                new_height = new_width * height // width
-            else:
-                new_height = 150
-                new_width = new_height * width // height
+            new_width, new_height = counter(request=request, width=width, height=height)
             image = image.resize((new_width, new_height))
             buffer = BytesIO()
             image.save(fp=buffer, format='webp')

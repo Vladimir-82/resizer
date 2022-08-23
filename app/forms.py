@@ -6,3 +6,4 @@ class AddPhoto(forms.ModelForm):
     class Meta:
         model = Photo
         fields = ['title', 'format', 'photo', 'width', 'height']
+        help_texts ='sss'
