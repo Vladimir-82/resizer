@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>Конвертация изображения</h1>
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+   {{ form.as_p }}
+  <button type="submit">Upload</button>
+</form>
+
+{% if object %}
+  <h3> Succesfully converted : {{object.title}} </h3>
+    <img src="{{ object.photo_mod.url }}" alt="connect"><br>
+    <a href="{{ object.photo_mod.url }}" target="_blank"> Download file </a>
+{% endif %}
+
+</body>
+</html>
