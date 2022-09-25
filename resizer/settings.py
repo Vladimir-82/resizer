@@ -3,6 +3,8 @@ from pathlib import Path
 import dj_database_url
 from django.test.runner import DiscoverRunner
 
+from .databases import get_database
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -76,15 +78,8 @@ MAX_CONN_AGE = 600
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'resizer',
-        'USER': 'vova',
-        'PASSWORD': 'kvb2371850',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
+    'default': get_database()
+            }
 
 
 
