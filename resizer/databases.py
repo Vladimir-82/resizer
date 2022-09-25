@@ -3,8 +3,8 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SQLITE = True
-POSTGRESQL = False
+SQLITE = False
+POSTGRESQL = True
 
 
 def get_database():

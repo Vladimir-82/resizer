@@ -1,3 +1,5 @@
+import psycopg2
+
 import os
 from pathlib import Path
 import dj_database_url
@@ -81,16 +83,20 @@ DATABASES = {
     'default': get_database()
             }
 
+DATABASE_URL = os.environ['DATABASE_URL']
 
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
-if "DATABASE_URL" in os.environ:
-    # Configure Django for DATABASE_URL environment variable.
-    DATABASES["default"] = dj_database_url.config(
-        conn_max_age=MAX_CONN_AGE, ssl_require=True)
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
-    # Enable test database if found in CI environment.
-    if "CI" in os.environ:
-        DATABASES["default"]["TEST"] = DATABASES["default"]
+# if "DATABASE_URL" in os.environ:
+#     # Configure Django for DATABASE_URL environment variable.
+#     DATABASES["default"] = dj_database_url.config(
+#         conn_max_age=MAX_CONN_AGE, ssl_require=True)
+#
+#     # Enable test database if found in CI environment.
+#     if "CI" in os.environ:
+#         DATABASES["default"]["TEST"] = DATABASES["default"]
 
 
 # Password validation
