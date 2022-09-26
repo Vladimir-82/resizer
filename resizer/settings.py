@@ -11,7 +11,7 @@ from .databases import get_database
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 IS_HEROKU = "DYNO" in os.environ
-
+Heroku = True
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -79,15 +79,15 @@ MAX_CONN_AGE = 600
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': get_database()
-            }
+if not Heroku:
+    DATABASES = {
+        'default': get_database()
+    }
+else:
+    DATABASES = {}
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
-DATABASE_URL = os.environ['DATABASE_URL']
 
-conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 # if "DATABASE_URL" in os.environ:
 #     # Configure Django for DATABASE_URL environment variable.

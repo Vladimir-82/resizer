@@ -13,7 +13,7 @@ def get_database():
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
-    else:
+    if POSTGRESQL:
         return {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': 'resizer',
