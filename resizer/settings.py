@@ -11,7 +11,7 @@ from .databases import get_database
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 IS_HEROKU = "DYNO" in os.environ
-Heroku = True
+HEROKU = False
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -79,28 +79,19 @@ MAX_CONN_AGE = 600
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-if not Heroku:
+if not HEROKU:
     DATABASES = {
         'default': get_database()
     }
 else:
     DATABASES = {}
-    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600,
+                                                  ssl_require=True
+                                                  )
 
 
 
-# if "DATABASE_URL" in os.environ:
-#     # Configure Django for DATABASE_URL environment variable.
-#     DATABASES["default"] = dj_database_url.config(
-#         conn_max_age=MAX_CONN_AGE, ssl_require=True)
-#
-#     # Enable test database if found in CI environment.
-#     if "CI" in os.environ:
-#         DATABASES["default"]["TEST"] = DATABASES["default"]
 
-
-# Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
