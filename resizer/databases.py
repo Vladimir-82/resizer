@@ -4,8 +4,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SQLITE = False
-POSTGRESQL = False
-HEROKU = True
+POSTGRESQL = True
+HEROKU = False
 
 
 def get_database():
