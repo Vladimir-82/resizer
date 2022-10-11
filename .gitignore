@@ -5,3 +5,4 @@ venv
 media
 .env
 /app/migrations/
+/venv

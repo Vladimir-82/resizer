@@ -1,1 +1,1 @@
-web: gunicorn resizer.wsgi
+web: gunicorn resizer.wsgi --log-file -

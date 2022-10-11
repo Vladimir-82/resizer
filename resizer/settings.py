@@ -4,14 +4,12 @@ import os
 from pathlib import Path
 import dj_database_url
 from django.test.runner import DiscoverRunner
-
 from .databases import get_database
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 IS_HEROKU = "DYNO" in os.environ
-Heroku = True
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -19,10 +17,10 @@ Heroku = True
 SECRET_KEY = 'django-insecure-0)#gu&)u8pkd_rjyp9x_n3+ed57or1ht3x%slkuyqhsfr%ci!-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if IS_HEROKU:
-    ALLOWED_HOSTS = ["*"]
-else:
-    ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ["*"]
+
+
 
 
 if not IS_HEROKU:
@@ -38,20 +36,23 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'app',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
 ROOT_URLCONF = 'resizer.urls'
 
 TEMPLATES = [
@@ -79,25 +80,27 @@ MAX_CONN_AGE = 600
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-if not Heroku:
-    DATABASES = {
-        'default': get_database()
-    }
-else:
-    DATABASES = {}
-    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+
+DATABASES = {
+    'default': get_database()
+            }
+# else:
+#     DATABASES = {}
+#     DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
 
-# if "DATABASE_URL" in os.environ:
-#     # Configure Django for DATABASE_URL environment variable.
-#     DATABASES["default"] = dj_database_url.config(
-#         conn_max_age=MAX_CONN_AGE, ssl_require=True)
-#
-#     # Enable test database if found in CI environment.
-#     if "CI" in os.environ:
-#         DATABASES["default"]["TEST"] = DATABASES["default"]
+if "DATABASE_URL" in os.environ:
+    # Configure Django for DATABASE_URL environment variable.
+    DATABASES["default"] = dj_database_url.config(
+        conn_max_age=MAX_CONN_AGE, ssl_require=True)
 
+    # Enable test database if found in CI environment.
+    if "CI" in os.environ:
+        DATABASES["default"]["TEST"] = DATABASES["default"]
+
+db_from_env = dj_database_url.config()
+DATABASES["default"].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -133,10 +136,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
+
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'app/', 'static/'),
+    os.path.join(PROJECT_ROOT, 'app/', 'static/'),
 ]
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
