@@ -88,7 +88,7 @@ DATABASES = {
         'USER': 'vova',
         'PASSWORD': 'kvb2371850',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '',
     }
 }
 
