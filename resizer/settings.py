@@ -82,22 +82,24 @@ MAX_CONN_AGE = 600
 
 
 DATABASES = {
-    'default': get_database()
-            }
-# else:
-#     DATABASES = {}
-#     DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'resizer',
+        'USER': 'vova',
+        'PASSWORD': 'kvb2371850',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 
-
-
-if "DATABASE_URL" in os.environ:
-    # Configure Django for DATABASE_URL environment variable.
-    DATABASES["default"] = dj_database_url.config(
-        conn_max_age=MAX_CONN_AGE, ssl_require=True)
-
-    # Enable test database if found in CI environment.
-    if "CI" in os.environ:
-        DATABASES["default"]["TEST"] = DATABASES["default"]
+# if "DATABASE_URL" in os.environ:
+#     # Configure Django for DATABASE_URL environment variable.
+#     DATABASES["default"] = dj_database_url.config(
+#         conn_max_age=MAX_CONN_AGE, ssl_require=True)
+#
+#     # Enable test database if found in CI environment.
+#     if "CI" in os.environ:
+#         DATABASES["default"]["TEST"] = DATABASES["default"]
 
 db_from_env = dj_database_url.config()
 DATABASES["default"].update(db_from_env)
