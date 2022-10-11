@@ -8,6 +8,7 @@ from django.test.runner import DiscoverRunner
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+HERUKU = False
 IS_HEROKU = "DYNO" in os.environ
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -77,38 +78,24 @@ WSGI_APPLICATION = 'resizer.wsgi.application'
 MAX_CONN_AGE = 600
 
 # Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+if not HERUKU:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'resizer',
+            'USER': 'vova',
+            'PASSWORD': 'kvb2371850',
+            'HOST': 'localhost',
+            'PORT': '',
+        }
+    }
+else:
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'resizer',
-#         'USER': 'vova',
-#         'PASSWORD': 'kvb2371850',
-#         'HOST': 'localhost',
-#         'PORT': '',
-#     }
-# }
-
-DATABASES = {}
-DATABASES['default'] = dj_database_url.config(conn_max_age=MAX_CONN_AGE,
-                                              ssl_require=True
-                                              )
-# if "DATABASE_URL" in os.environ:
-#     # Configure Django for DATABASE_URL environment variable.
-#     DATABASES["default"] = dj_database_url.config(
-#         conn_max_age=MAX_CONN_AGE, ssl_require=True)
-#
-#     # Enable test database if found in CI environment.
-#     if "CI" in os.environ:
-#         DATABASES["default"]["TEST"] = DATABASES["default"]
-
-# db_from_env = dj_database_url.config()
-# DATABASES["default"].update(db_from_env)
-
-# Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
+    DATABASES = {}
+    DATABASES['default'] = dj_database_url.config(conn_max_age=MAX_CONN_AGE,
+                                                  ssl_require=True
+                                                  )
 
 AUTH_PASSWORD_VALIDATORS = [
     {
