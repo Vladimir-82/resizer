@@ -81,17 +81,19 @@ MAX_CONN_AGE = 600
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'resizer',
-        'USER': 'vova',
-        'PASSWORD': 'kvb2371850',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'resizer',
+#         'USER': 'vova',
+#         'PASSWORD': 'kvb2371850',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 # if "DATABASE_URL" in os.environ:
 #     # Configure Django for DATABASE_URL environment variable.
 #     DATABASES["default"] = dj_database_url.config(
@@ -101,8 +103,8 @@ DATABASES = {
 #     if "CI" in os.environ:
 #         DATABASES["default"]["TEST"] = DATABASES["default"]
 
-db_from_env = dj_database_url.config()
-DATABASES["default"].update(db_from_env)
+# db_from_env = dj_database_url.config()
+# DATABASES["default"].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
